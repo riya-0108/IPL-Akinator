@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPL AI Mind Reader</title>
+    <link rel="preconnect" href="https://upload.wikimedia.org" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stadium-bg" aria-hidden="true">
+      <span class="light light-one"></span>
+      <span class="light light-two"></span>
+      <span class="light light-three"></span>
+      <div class="field-glow"></div>
+      <div class="particle-layer" id="particleLayer"></div>
+    </div>
+
+    <div class="cursor-ball" id="cursorBall" aria-hidden="true">&#127951;</div>
+    <div class="cursor-trail" id="cursorTrail" aria-hidden="true"></div>
+
+    <main class="app-shell">
+      <section class="hero-panel" id="heroPanel" aria-labelledby="appTitle">
+        <div class="hero-copy">
+          <p class="eyebrow">Frontend-only IPL Akinator</p>
+          <h1 id="appTitle">&#127951; IPL AI Mind Reader</h1>
+          <p class="hero-subtitle">Think of any IPL player, I will guess it!</p>
+          <div class="live-question glass-chip" aria-live="polite">
+            <span class="scan-dot"></span>
+            <span id="heroQuestion">Loading IPL mind scan...</span>
+          </div>
+          <button class="start-button magnetic" id="startBtn" type="button">
+            <span>Start Game</span>
+          </button>
+        </div>
+
+        <div class="slider-stage" aria-hidden="true">
+          <div class="stadium-poster">
+            <div class="pitch-line"></div>
+            <div class="batter-silhouette"></div>
+            <div class="stadium-copy">
+              <span>AI scout deck</span>
+              <strong id="featuredPlayer">Virat Kohli</strong>
+            </div>
+          </div>
+          <div class="poster-slider">
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/Virat_Kohli_in_PMO_New_Delhi.jpg" alt="Virat Kohli" />
+              <figcaption>RCB chase mode</figcaption>
+            </figure>
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/MS_Dhoni.jpg" alt="MS Dhoni" />
+              <figcaption>Finisher energy</figcaption>
+            </figure>
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/Rohit_Gurunath_Sharma.jpg" alt="Rohit Sharma" />
+              <figcaption>Hitman</figcaption>
+            </figure>
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/Jasprit_Bumrah_(4).jpg" alt="Jasprit Bumrah" />
+              <figcaption>Yorker radar</figcaption>
+            </figure>
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/Hardik_Pandya_in_PMO_New_Delhi.jpg" alt="Hardik Pandya" />
+              <figcaption>Kung Fu Pandya</figcaption>
+            </figure>
+            <figure>
+              <img src="https://en.wikipedia.org/wiki/Special:FilePath/Sachin_Tendulkar.jpg" alt="Sachin Tendulkar" />
+              <figcaption>God of Cricket</figcaption>
+            </figure>
+          </div>
+          <div class="player-ticker" id="playerTicker"></div>
+        </div>
+      </section>
+
+      <section class="game-layout" id="gameLayout" aria-label="IPL AI guessing game">
+        <aside class="history-panel glass-panel">
+          <div class="panel-title">
+            <span>&#129534;</span>
+            <div>
+              <h2>History</h2>
+              <p>Every answer changes the model.</p>
+            </div>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </aside>
+
+        <section class="play-panel">
+          <div class="score-strip">
+            <div>
+              <span>Questions</span>
+              <strong id="questionCount">0</strong>
+            </div>
+            <div>
+              <span>Top Confidence</span>
+              <strong id="topConfidence">0%</strong>
+            </div>
+            <div>
+              <span>Candidates</span>
+              <strong id="candidateCount">0</strong>
+            </div>
+          </div>
+
+          <article class="question-card glass-panel" id="questionCard">
+            <p class="question-kicker" id="questionKicker">Mind reader online</p>
+            <h2 id="questionText"><span class="question-icon">&#129504;</span><span class="question-copy">Ready to begin?</span></h2>
+            <p class="thinking-text" id="thinkingText" aria-live="polite">&#129302; AI is analyzing your answer<span class="dots"></span></p>
+            <div class="answer-grid" id="answerGrid" aria-label="Answer choices">
+              <button class="answer-button yes magnetic" type="button" data-answer="yes"><span>&#9989;</span> Yes</button>
+              <button class="answer-button no magnetic" type="button" data-answer="no"><span>&#10060;</span> No</button>
+              <button class="answer-button maybe magnetic" type="button" data-answer="maybe"><span>&#129300;</span> Maybe</button>
+              <button class="answer-button unknown magnetic" type="button" data-answer="unknown"><span>&#128528;</span> Don't Know</button>
+            </div>
+          </article>
+
+          <section class="result-screen glass-panel" id="resultScreen" hidden>
+            <div class="result-photo-wrap">
+              <img id="playerImage" alt="" />
+            </div>
+            <div class="result-copy">
+              <p class="eyebrow">Final prediction</p>
+              <h2 id="guessName">&#127919; I guess: Virat Kohli</h2>
+              <p class="confidence-line">Confidence: <strong id="guessConfidence">87%</strong></p>
+              <p id="guessDetails"></p>
+              <div class="reasoning-box">
+                <h3>Why I guessed this</h3>
+                <ul id="reasonList"></ul>
+              </div>
+              <button class="restart-button magnetic" id="playAgainBtn" type="button">Play Again</button>
+            </div>
+          </section>
+        </section>
+
+        <aside class="probability-panel glass-panel">
+          <div class="panel-title">
+            <span>&#128202;</span>
+            <div>
+              <h2>Live Probability</h2>
+              <p>Top 3 players after each answer.</p>
+            </div>
+          </div>
+          <div class="leaderboard" id="leaderboard"></div>
+          <button class="mini-reset magnetic" id="restartBtn" type="button">Restart Match</button>
+        </aside>
+      </section>
+    </main>
+
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
